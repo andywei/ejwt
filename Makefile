@@ -1,14 +1,21 @@
-PROJECT = ejwt 
+BASE_DIR = $(shell pwd)
+REBAR    = $(BASE_DIR)/rebar
+DIST	 = $(BASE_DIR)/rel/$(APP)
 
-DEPS = jsx base64url
-BUILD_DEPS = elvis_mk
-DEP_PLUGINS = elvis_mk
+all: compile
 
-dep_jsx = git https://github.com/talentdeficit/jsx.git v2.8.0 
-dep_base64url = git https://github.com/dvv/base64url.git v1.0 
+compile: deps
+	@$(REBAR) compile
 
-dep_elvis_mk = git https://github.com/inaka/elvis.mk.git 215616a
+deps:
+	@$(REBAR) get-deps
 
-COVER = 1
+update-deps:
+	@$(REBAR) update-deps
 
-include erlang.mk
+xref:
+	@$(REBAR) xref skip_deps=true
+
+clean:
+	@$(REBAR) clean
+
